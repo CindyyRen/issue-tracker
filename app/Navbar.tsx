@@ -1,10 +1,11 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import { AiFillBug } from 'react-icons/ai';
 import { usePathname } from 'next/navigation';
 import classNames from 'classnames';
 
-const Navbar = () => {
+const NavBar = () => {
   const links = [
     { label: 'Dashboard', href: '/' },
     { label: 'Issues', href: '/issues' },
@@ -34,4 +35,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;
