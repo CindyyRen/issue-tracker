@@ -1,13 +1,17 @@
 'use client';
 
 import React from 'react';
-import { Button, Callout, TextField } from '@radix-ui/themes';
+import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import SimpleMDE from 'react-simplemde-editor';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import 'easymde/dist/easymde.min.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createIssueSchema } from '@/app/validationSchemas';
+import { z } from 'zod';
+import ErrorMessage from '@/app/components/ErrorMessage';
 
 interface IssueForm {
   title: String;
@@ -16,21 +20,28 @@ interface IssueForm {
 
 const NewIssuePage = () => {
   const router = useRouter();
-  const [error, setError] = useState('');
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({
+    resolver: zodResolver(createIssueSchema),
+  });
+  // const [error, setError] = useState('');
   // register is used for registering input elements within your form.
   //  control: date pickers, custom dropdowns, or "SimpleMDE" text editor.
-  const { register, control, handleSubmit } = useForm<IssueForm>();
-  const onSubmit = async (data: IssueForm) => {
-    await axios.post('/api/issues', data);
-    router.push('/issues');
-  };
+  // const onSubmit = async (data: IssueForm) => {
+  //   await axios.post('/api/issues', data);
+  //   router.push('/issues');
+  // };
   return (
     <div className="max-w-xl">
-      {error && (
+      {/* {error && (
         <Callout.Root color="red" className="mb-5">
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
-      )}
+      )} */}
       <form
         className="space-y-3"
         onSubmit={handleSubmit(async (data) => {
@@ -39,13 +50,14 @@ const NewIssuePage = () => {
             router.push('/issues');
           } catch (error) {
             // if(error)  console.log(error.data);
-            setError('An unexpected error occurred.');
+            // setError('An unexpected error occurred.');
           }
         })}
       >
         <TextField.Root>
           <TextField.Input placeholder="Title" {...register('title')} />
         </TextField.Root>
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
           control={control}
@@ -53,6 +65,7 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button>Submit New Issue</Button>
       </form>
     </div>
