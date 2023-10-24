@@ -1,6 +1,9 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// generate a JavaScript client to interact with your database. 
+// "prisma-client-js" provider, the standard JavaScript client provider for Prisma.
+// generate the Prisma client CLI:npx prisma generate
 generator client {
   provider = "prisma-client-js"
 }
