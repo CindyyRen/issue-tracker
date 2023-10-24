@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
 
 interface IssueForm {
   title: String;
@@ -28,6 +29,7 @@ const NewIssuePage = () => {
   } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema),
   });
+  const [isSubmitting, setSubmitting] = useState(false);
   // const [error, setError] = useState('');
   // register is used for registering input elements within your form.
   //  control: date pickers, custom dropdowns, or "SimpleMDE" text editor.
@@ -46,9 +48,11 @@ const NewIssuePage = () => {
         className="space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setSubmitting(true);
             const res = await axios.post('/api/issues', data);
             router.push('/issues');
           } catch (error) {
+            setSubmitting(false);
             // if(error)  console.log(error.data);
             // setError('An unexpected error occurred.');
           }
@@ -66,7 +70,9 @@ const NewIssuePage = () => {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>Submit New Issue</Button>
+        <Button disabled={isSubmitting}>
+          Submit New Issue {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
