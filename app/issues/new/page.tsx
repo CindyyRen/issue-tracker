@@ -71,6 +71,7 @@ const NewIssuePage = () => {
           Submit New Issue {isSubmitting && <Spinner />}
         </Button>
       </form>
+      
     </div>
   );
 };
