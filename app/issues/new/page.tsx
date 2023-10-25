@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { Button, Callout, Text, TextField } from '@radix-ui/themes';
-import SimpleMDE from 'react-simplemde-editor';
+// import SimpleMDE from 'react-simplemde-editor';
+import dynamic from 'next/dynamic';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import 'easymde/dist/easymde.min.css';
@@ -13,6 +14,11 @@ import { createIssueSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+  ssr: false,
+});
+//  loading: () => <p>Loading...</p>,
+// ssr: false, only loaded on the client side.
 
 interface IssueForm {
   title: String;
@@ -21,6 +27,7 @@ interface IssueForm {
 
 const NewIssuePage = () => {
   const router = useRouter();
+
   const {
     register,
     control,
@@ -71,7 +78,6 @@ const NewIssuePage = () => {
           Submit New Issue {isSubmitting && <Spinner />}
         </Button>
       </form>
-      
     </div>
   );
 };
