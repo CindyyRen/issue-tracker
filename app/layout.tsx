@@ -1,5 +1,3 @@
-'use client';
-
 import '@radix-ui/themes/styles.css';
 import './theme-config.css';
 import './globals.css';
@@ -8,7 +6,6 @@ import { Inter } from 'next/font/google';
 import { Container, Theme, ThemePanel } from '@radix-ui/themes';
 import NavBar from './NavBar';
 import AuthProvider from './auth/Provider';
-// import { SessionProvider } from 'next-auth/react';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,7 +26,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.variable}>
         <AuthProvider>
-        {/* <SessionProvider> */}
           <Theme accentColor="cyan" radius="small">
             <NavBar />
             <main className="p-5">
@@ -37,7 +33,6 @@ export default function RootLayout({
             </main>
             {/* <ThemePanel /> */}
           </Theme>
-          {/* </SessionProvider> */}
         </AuthProvider>
       </body>
     </html>
